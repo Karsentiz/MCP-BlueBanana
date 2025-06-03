@@ -1,0 +1,13 @@
+{
+  "name": "security-sequential-thinking",
+  "version": "0.1.0",
+  "description": "Security-focused sequential thinking MCP server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0"
+  }
+}
