@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: security-sequential-thinking-mcp
+    runtime: node
+    rootDir: security-sequential-thinking
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 16
+      - key: SERVER_MODE
+        value: http
