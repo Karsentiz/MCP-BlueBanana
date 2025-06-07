@@ -1,5 +1,19 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
+import express from 'express';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import process from 'process';
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+const modeArg = args.find(arg => arg.startsWith('--mode='));
+const mode = modeArg ? modeArg.split('=')[1] : process.env.SERVER_MODE || 'http';
 
 // Security frameworks and methodologies
 const SecurityFramework = {
@@ -435,15 +449,28 @@ You should:
     });
   }
 
-  handleCallToolRequest(request) {
-    if (request.params.name === 'securitysequentialthinking') {
-      const result = this.securityThinkingServer.processThought(request.params.arguments);
+  async handleCallToolRequest(request) {
+    try {
+      // Handle both formats: direct name/input and tool_name/tool_input
+      const toolName = request.tool_name || request.name;
+      const toolInput = request.tool_input || request.input;
+      
+      if (toolName !== this.toolDefinition.name) {
+        return this.createErrorResponse(`Unknown tool: ${toolName}`);
+      }
+
+      const validatedInput = this.securityThinkingServer.validateThoughtData(toolInput);
+      const result = this.securityThinkingServer.processThought(validatedInput);
+
       return JSON.stringify({
-        type: 'call_tool_response',
-        ...result
+        type: 'tool_call_response',
+        content: [{
+          type: 'text',
+          text: result
+        }]
       });
-    } else {
-      return this.createErrorResponse(`Unknown tool: ${request.params.name}`);
+    } catch (error) {
+      return this.createErrorResponse(`Error calling tool: ${error.message}`);
     }
   }
 
@@ -458,7 +485,7 @@ You should:
     });
   }
 
-  async start() {
+  async startStdio() {
     console.error("Security Sequential Thinking MCP Server running on stdio");
     
     // Set up stdin/stdout handling
@@ -496,6 +523,55 @@ You should:
       process.exit(0);
     });
   }
+  
+  async startHttp() {
+    const app = express();
+    const PORT = process.env.PORT || 3000;
+    
+    // Enable CORS for all routes
+    app.use(cors());
+    
+    // Parse JSON bodies
+    app.use(express.json());
+    
+    // Health check endpoint
+    app.get('/', (req, res) => {
+      res.json({ status: 'ok', message: 'Security Sequential Thinking MCP Server is running' });
+    });
+    
+    // MCP list_tools endpoint
+    app.post('/mcp/list_tools', async (req, res) => {
+      try {
+        const response = await this.handleListToolsRequest();
+        res.json(JSON.parse(response));
+      } catch (error) {
+        res.status(500).json(JSON.parse(this.createErrorResponse(`Error listing tools: ${error.message}`)));
+      }
+    });
+    
+    // MCP call_tool endpoint
+    app.post('/mcp/call_tool', async (req, res) => {
+      try {
+        const response = await this.handleCallToolRequest(req.body);
+        res.json(JSON.parse(response));
+      } catch (error) {
+        res.status(500).json(JSON.parse(this.createErrorResponse(`Error calling tool: ${error.message}`)));
+      }
+    });
+    
+    // Start the server
+    app.listen(PORT, () => {
+      console.error(`Security Sequential Thinking MCP Server running on HTTP port ${PORT}`);
+    });
+  }
+  
+  async start() {
+    if (mode === 'stdio') {
+      await this.startStdio();
+    } else {
+      await this.startHttp();
+    }
+  }
 }
 
 // Start the server
@@ -503,4 +579,15 @@ const server = new MCPServer();
 server.start().catch((error) => {
   console.error("Fatal error running server:", error);
   process.exit(1);
+});
+
+// Handle graceful shutdown
+process.on('SIGINT', () => {
+  console.error('Received SIGINT. Shutting down gracefully.');
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.error('Received SIGTERM. Shutting down gracefully.');
+  process.exit(0);
 });

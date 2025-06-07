@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that enables AI models to perform security-focused sequential thinking. This server helps guide models through structured security analysis of code, systems, and processes using established security frameworks.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
 ## Features
 
 - **Security-Focused Sequential Thinking**: Guides models through methodical security analysis
@@ -24,17 +26,44 @@ npm install
 
 ## Usage
 
-### Running the Server
+### Running the Server Locally
+
+The server can run in two modes: HTTP mode (default) and stdio mode.
 
 ```bash
+# Run in HTTP mode (default)
 npm start
+
+# Run in stdio mode (for local MCP clients)
+npm run dev
 ```
 
-The server runs on stdio, making it compatible with MCP clients.
+### Deploying to Render.com
+
+1. Fork or clone this repository to your GitHub account
+2. Log in to your [Render.com](https://render.com) account
+3. Click on "New" and select "Web Service"
+4. Connect your GitHub repository
+5. Configure the service with the following settings:
+   - **Name**: Choose a name for your service
+   - **Environment**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Plan**: Free (or choose a paid plan for better performance)
+6. Click "Create Web Service"
+
+Once deployed, Render will provide you with a URL for your MCP server (e.g., `https://your-service-name.onrender.com`).
 
 ### Integrating with MCP Clients
 
 This server exposes a single tool named `securitysequentialthinking` that can be used by MCP clients.
+
+#### Connecting to Claude or other AI assistants
+
+1. Open Claude or another AI assistant that supports MCP
+2. Navigate to settings and add a new MCP server
+3. Provide the URL of your deployed server (e.g., `https://your-service-name.onrender.com`)
+4. The AI assistant should now have access to the `securitysequentialthinking` tool
 
 ### Tool Parameters
 
