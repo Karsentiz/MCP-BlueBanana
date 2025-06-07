@@ -528,8 +528,12 @@ You should:
     const app = express();
     const PORT = process.env.PORT || 3000;
     
-    // Enable CORS for all routes
-    app.use(cors());
+    // Enable CORS for all routes with specific options for SSE
+    app.use(cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
+    }));
     
     // Parse JSON bodies
     app.use(express.json());
@@ -557,6 +561,32 @@ You should:
       } catch (error) {
         res.status(500).json(JSON.parse(this.createErrorResponse(`Error calling tool: ${error.message}`)));
       }
+    });
+    
+    // MCP SSE endpoint for real-time communication
+    app.get('/mcp/sse', (req, res) => {
+      // Set headers for SSE
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      
+      // Send an initial message
+      res.write(`data: ${JSON.stringify({type: 'connected'})}
+
+`);
+      
+      // Keep the connection alive with a heartbeat
+      const heartbeat = setInterval(() => {
+        res.write(`data: ${JSON.stringify({type: 'heartbeat'})}
+
+`);
+      }, 30000); // Send heartbeat every 30 seconds
+      
+      // Clean up on close
+      req.on('close', () => {
+        clearInterval(heartbeat);
+        res.end();
+      });
     });
     
     // Start the server
