@@ -1,0 +1,12 @@
+{
+  "name": "mcp-bluebanana",
+  "version": "0.1.0",
+  "description": "MCP BlueBanana server wrapper",
+  "scripts": {
+    "start": "cd security-sequential-thinking && npm install && npm start",
+    "dev": "cd security-sequential-thinking && npm install && npm run dev"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
