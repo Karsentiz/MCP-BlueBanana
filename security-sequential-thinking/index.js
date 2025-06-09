@@ -563,29 +563,63 @@ You should:
       }
     });
     
-    // MCP SSE endpoint for real-time communication
-    app.get('/mcp/sse', (req, res) => {
-      // Set headers for SSE
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      
-      // Send an initial message
-      res.write(`data: ${JSON.stringify({type: 'connected'})}
+    // Helper function to send SSE messages with proper formatting
+    const sendSSEMessage = (res, event, data) => {
+      res.write(`event: ${event}\n`);
+      res.write(`data: ${JSON.stringify(data)}\n\n`);
+      res.flush && res.flush(); // Use flush if available to ensure immediate sending
+    };
 
-`);
-      
-      // Keep the connection alive with a heartbeat
-      const heartbeat = setInterval(() => {
-        res.write(`data: ${JSON.stringify({type: 'heartbeat'})}
-
-`);
-      }, 30000); // Send heartbeat every 30 seconds
-      
-      // Clean up on close
-      req.on('close', () => {
-        clearInterval(heartbeat);
-        res.end();
+    // MCP SSE endpoint for real-time communication - with both /mcp/sse and /sse paths for compatibility
+    const setupSSEEndpoint = (path) => {
+      app.get(path, (req, res) => {
+        console.error(`SSE connection established on ${path}`);
+        
+        // Set headers for SSE
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
+        
+        // Send an initial message
+        sendSSEMessage(res, 'connected', {type: 'connected'});
+        
+        // Keep the connection alive with a heartbeat
+        const heartbeat = setInterval(() => {
+          try {
+            sendSSEMessage(res, 'heartbeat', {type: 'heartbeat', timestamp: Date.now()});
+          } catch (error) {
+            console.error('Error sending heartbeat:', error);
+            clearInterval(heartbeat);
+          }
+        }, 10000); // Send heartbeat every 10 seconds
+        
+        // Clean up on close
+        req.on('close', () => {
+          console.error(`SSE connection closed on ${path}`);
+          clearInterval(heartbeat);
+          res.end();
+        });
+        
+        // Handle errors
+        req.on('error', (error) => {
+          console.error(`SSE connection error on ${path}:`, error);
+          clearInterval(heartbeat);
+          res.end();
+        });
+      });
+    };
+    
+    // Set up SSE endpoints at both paths for maximum compatibility
+    setupSSEEndpoint('/mcp/sse');
+    setupSSEEndpoint('/sse');
+    
+    // Add a debug endpoint to check SSE status
+    app.get('/debug/sse-status', (req, res) => {
+      res.json({
+        status: 'ok',
+        message: 'SSE endpoints are configured',
+        endpoints: ['/mcp/sse', '/sse']
       });
     });
     
