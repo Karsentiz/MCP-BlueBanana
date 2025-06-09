@@ -457,6 +457,7 @@ header {
   border-radius: var(--border-radius);
   padding: 20px;
   overflow-x: auto;
+  position: relative;
 }
 
 .code-block pre {
@@ -468,6 +469,98 @@ header {
   font-family: 'Fira Code', monospace;
   font-size: 14px;
   line-height: 1.5;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--banana-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-btn:hover {
+  background-color: #0055aa;
+}
+
+.copy-btn.copied {
+  background-color: var(--success-color);
+}
+
+.intro-text {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.what-is-mcp {
+  background-color: #f0f4ff;
+  border-left: 4px solid var(--banana-blue);
+  padding: 15px 20px;
+  margin-bottom: 2rem;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.what-is-mcp h3 {
+  color: var(--banana-blue);
+  margin-bottom: 0.5rem;
+}
+
+.step-by-step {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.step-by-step .step {
+  display: flex;
+  margin-bottom: 2rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.step-by-step .step-number {
+  background-color: var(--banana-blue);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.step-by-step .step-content {
+  flex-grow: 1;
+}
+
+.step-by-step h4 {
+  margin-bottom: 0.5rem;
+  color: var(--dark-color);
+}
+
+.example {
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--banana-yellow);
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.step-by-step ul {
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
 /* CTA Section */

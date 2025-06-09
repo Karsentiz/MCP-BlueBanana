@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Copy to clipboard functionality
+    window.copyToClipboard = function(button) {
+        const codeBlock = button.previousElementSibling;
+        const codeText = codeBlock.textContent;
+        
+        navigator.clipboard.writeText(codeText).then(() => {
+            // Change button text temporarily
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            button.textContent = 'Error!';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+            }, 2000);
+        });
+    };
+    
     // Mobile navigation toggle
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.querySelector('.nav-links');

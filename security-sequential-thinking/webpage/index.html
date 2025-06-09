@@ -121,62 +121,182 @@
             </div>
         </section>
 
-        <!-- Call to Action Section -->
+        <!-- Installation Guide Section -->
         <section id="installation">
             <div class="container">
                 <h2>Installation Guide</h2>
+                
+                <div class="intro-text">
+                    <p>The Blue Banana Security MCP is a tool that helps AI assistants analyze code for security issues. Follow these simple steps to connect it to your favorite AI platform.</p>
+                </div>
+
+                <div class="what-is-mcp">
+                    <h3>What is an MCP?</h3>
+                    <p>An MCP (Model Context Protocol) is like a plugin for AI assistants. It gives them special abilities - in this case, the ability to analyze code for security problems.</p>
+                </div>
+                
                 <div class="tabs">
                     <div class="tab-buttons">
                         <button class="tab-btn active" data-tab="cursor">Cursor</button>
                         <button class="tab-btn" data-tab="windsurf">Windsurf</button>
                         <button class="tab-btn" data-tab="claude">Claude</button>
+                        <button class="tab-btn" data-tab="general">General Use</button>
                     </div>
                     
                     <div class="tab-content active" id="cursor-content">
                         <h3>Installing on Cursor</h3>
-                        <div class="code-block">
-                            <pre><code># No need to clone or install anything!
-# Simply add this to your Cursor configuration:
-
-{
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Open Cursor Settings</h4>
+                                    <p>Open Cursor and click on the settings icon (⚙️) in the bottom left corner.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Find MCP Configuration</h4>
+                                    <p>Look for "MCP" or "Model Context Protocol" in the settings menu.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Add This Configuration</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
   "bluebanana": {
     "serverUrl": "https://mcp-bluebanana.onrender.com"
   }
-}
-
-# That's it! You can now use Blue Banana MCP for security analysis in Cursor.</code></pre>
+}</code></pre>
+                                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Save and Restart</h4>
+                                    <p>Save your settings and restart Cursor if needed.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="tab-content" id="windsurf-content">
                         <h3>Installing on Windsurf</h3>
-                        <div class="code-block">
-                            <pre><code># No need to clone or install anything!
-# Simply add this to your .windsurf file:
-
-{
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Find Your .windsurf File</h4>
+                                    <p>Open your project folder and look for the .windsurf file. If it doesn't exist, create one.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Add This Configuration</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
   "bluebanana": {
     "serverUrl": "https://mcp-bluebanana.onrender.com"
   }
-}
-
-# That's it! You can now use Blue Banana MCP for security analysis in Windsurf.</code></pre>
+}</code></pre>
+                                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Save and Restart</h4>
+                                    <p>Save the file and restart Windsurf if it's already running.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="tab-content" id="claude-content">
                         <h3>Installing on Claude</h3>
-                        <div class="code-block">
-                            <pre><code># No need to clone or install anything!
-# Add this to your Claude configuration:
-
-{
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Access Claude Settings</h4>
+                                    <p>Open Claude and navigate to the settings or configuration section.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Find MCP Configuration</h4>
+                                    <p>Look for "MCP" or "Model Context Protocol" settings.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Add This Configuration</h4>
+                                    <div class="code-block">
+                                        <pre><code>{
   "bluebanana": {
     "serverUrl": "https://mcp-bluebanana.onrender.com"
   }
-}
+}</code></pre>
+                                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Save and Restart</h4>
+                                    <p>Save your settings and restart Claude if needed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-# That's it! You can now use Blue Banana MCP for security analysis in Claude.</code></pre>
+                    <div class="tab-content" id="general-content">
+                        <h3>How to Use the Security MCP</h3>
+                        <div class="step-by-step">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Ask for a Security Analysis</h4>
+                                    <p>After installation, simply ask your AI assistant to analyze your code for security issues.</p>
+                                    <div class="example">
+                                        <p><strong>Example:</strong> "Please analyze this code for security vulnerabilities using the Blue Banana Security MCP."</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Review the Analysis</h4>
+                                    <p>The AI will use the MCP to provide a detailed security analysis with:</p>
+                                    <ul>
+                                        <li>Identified vulnerabilities</li>
+                                        <li>Severity ratings</li>
+                                        <li>Suggested fixes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Troubleshooting</h4>
+                                    <p>If the MCP isn't working:</p>
+                                    <ul>
+                                        <li>Check that you've added the configuration correctly</li>
+                                        <li>Make sure your AI platform supports MCPs</li>
+                                        <li>Try restarting your AI application</li>
+                                        <li>Verify your internet connection</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
