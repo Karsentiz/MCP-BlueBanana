@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Banana MCP - Security Sequential Thinking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-icon">
+                        <path d="M50 10C30 10 15 25 15 45C15 65 30 90 50 90C70 90 85 75 85 55C85 35 70 10 50 10Z" fill="#FFCC00"/>
+                        <path d="M50 20C35 20 25 30 25 45C25 60 35 80 50 80C65 80 75 70 75 55C75 40 65 20 50 20Z" fill="#0066CC" fill-opacity="0.2"/>
+                        <path d="M50 30C40 30 35 35 35 45C35 55 40 70 50 70C60 70 65 65 65 55C65 45 60 30 50 30Z" stroke="#0066CC" stroke-width="3"/>
+                        <path d="M50 40C45 40 42.5 42.5 42.5 47.5C42.5 52.5 45 60 50 60C55 60 57.5 57.5 57.5 52.5C57.5 47.5 55 40 50 40Z" stroke="#0066CC" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="5" fill="#0066CC"/>
+                    </svg>
+                    <span>Blue Banana MCP</span>
+                </div>
+                <div class="nav-toggle" id="navToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#cta" class="nav-cta">Get Started</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hook Section -->
+        <section id="hero">
+            <div class="container">
+                <h1>Blue Banana <span class="highlight">Security MCP</span></h1>
+                <p class="tagline">Guide AI models through structured security analysis with our MCP server</p>
+                <div class="cta-buttons">
+                    <a href="#installation" class="btn primary">Get Started</a>
+                    <a href="#features" class="btn secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explain Section -->
+        <section id="features">
+            <div class="container">
+                <h2>Why Security Sequential Thinking?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Security-Focused Analysis</h3>
+                        <p>Guide AI models through methodical security analysis of code and systems</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-project-diagram"></i></div>
+                        <h3>Multiple Security Frameworks</h3>
+                        <p>Incorporates OWASP Top 10, STRIDE, CWE, and NIST SSDF</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h3>Severity Ratings</h3>
+                        <p>Assigns severity levels to identified security issues</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-tasks"></i></div>
+                        <h3>Security Categorization</h3>
+                        <p>Categorizes security concerns by type for better organization</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-tools"></i></div>
+                        <h3>Mitigation Suggestions</h3>
+                        <p>Tracks and suggests mitigations for security issues</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>Security Summary</h3>
+                        <p>Provides a comprehensive summary of security findings</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Initial Assessment</h3>
+                        <p>The model starts with an initial security assessment of the code or system</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Vulnerability Identification</h3>
+                        <p>Identifies specific vulnerabilities using established security frameworks</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Severity Classification</h3>
+                        <p>Classifies issues by severity (Critical, High, Medium, Low, Info)</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Mitigation Suggestion</h3>
+                        <p>Suggests specific mitigations for the identified security issues</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <h3>Security Summary</h3>
+                        <p>Provides a comprehensive security summary with actionable insights</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section id="installation">
+            <div class="container">
+                <h2>Installation Guide</h2>
+                <div class="tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="cursor">Cursor</button>
+                        <button class="tab-btn" data-tab="windsurf">Windsurf</button>
+                        <button class="tab-btn" data-tab="claude">Claude</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="cursor-content">
+                        <h3>Installing on Cursor</h3>
+                        <div class="code-block">
+                            <pre><code># No need to clone or install anything!
+# Simply add this to your Cursor configuration:
+
+{
+  "bluebanana": {
+    "serverUrl": "https://mcp-bluebanana.onrender.com"
+  }
+}
+
+# That's it! You can now use Blue Banana MCP for security analysis in Cursor.</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="windsurf-content">
+                        <h3>Installing on Windsurf</h3>
+                        <div class="code-block">
+                            <pre><code># No need to clone or install anything!
+# Simply add this to your .windsurf file:
+
+{
+  "bluebanana": {
+    "serverUrl": "https://mcp-bluebanana.onrender.com"
+  }
+}
+
+# That's it! You can now use Blue Banana MCP for security analysis in Windsurf.</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="claude-content">
+                        <h3>Installing on Claude</h3>
+                        <div class="code-block">
+                            <pre><code># No need to clone or install anything!
+# Add this to your Claude configuration:
+
+{
+  "bluebanana": {
+    "serverUrl": "https://mcp-bluebanana.onrender.com"
+  }
+}
+
+# That's it! You can now use Blue Banana MCP for security analysis in Claude.</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta">
+            <div class="container">
+                <h2>Ready to Enhance Your Security Analysis?</h2>
+                <p>Start using Security Sequential Thinking MCP today to guide AI models through structured security analysis.</p>
+                <a href="https://github.com/Karsentiz/MCP-BlueBanana" class="btn primary">Get Started Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Blue Banana MCP</h3>
+                    <p>Security-focused sequential thinking for AI models</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>Email: info@secthinking-mcp.com</p>
+                    <p>GitHub: github.com/Karsentiz/MCP-BlueBanana</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Blue Banana MCP. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
