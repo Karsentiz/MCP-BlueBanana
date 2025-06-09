@@ -3,6 +3,8 @@
 ## Summary
 Successfully deployed the Security Sequential Thinking MCP server to Render.com, making it publicly accessible at https://mcp-bluebanana.onrender.com. The server provides a security-focused sequential thinking tool that can be used by AI assistants like Claude.
 
+Additionally, deployed the static webpage to Netlify, making it accessible at https://blue-banana-security-mcp.windsurf.build.
+
 ## Key Changes
 
 1. **Added HTTP Server Capabilities**
@@ -24,6 +26,12 @@ Successfully deployed the Security Sequential Thinking MCP server to Render.com,
    - Created test scripts to verify HTTP functionality
    - Confirmed all endpoints are working correctly
    - Verified SSE connection for real-time communication
+
+5. **Webpage Deployment to Netlify**
+   - Created necessary configuration files (netlify.toml, .gitignore)
+   - Deployed static webpage to Netlify
+   - Made the webpage publicly accessible at https://blue-banana-security-mcp.windsurf.build
+   - Project ID: adf8686a-4d6e-4b51-b0ec-bd949bfa94f6 for future deployments
 
 ## Usage
 To use this MCP server with Claude or other AI assistants, add the following configuration:
