@@ -563,56 +563,91 @@ You should:
       }
     });
     
-    // Helper function to send SSE messages with proper formatting
-    const sendSSEMessage = (res, event, data) => {
-      res.write(`event: ${event}\n`);
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-      res.flush && res.flush(); // Use flush if available to ensure immediate sending
-    };
-
-    // MCP SSE endpoint for real-time communication - with both /mcp/sse and /sse paths for compatibility
-    const setupSSEEndpoint = (path) => {
-      app.get(path, (req, res) => {
-        console.error(`SSE connection established on ${path}`);
-        
-        // Set headers for SSE
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
-        res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
-        
-        // Send an initial message
-        sendSSEMessage(res, 'connected', {type: 'connected'});
-        
-        // Keep the connection alive with a heartbeat
-        const heartbeat = setInterval(() => {
-          try {
-            sendSSEMessage(res, 'heartbeat', {type: 'heartbeat', timestamp: Date.now()});
-          } catch (error) {
-            console.error('Error sending heartbeat:', error);
-            clearInterval(heartbeat);
-          }
-        }, 10000); // Send heartbeat every 10 seconds
-        
-        // Clean up on close
-        req.on('close', () => {
-          console.error(`SSE connection closed on ${path}`);
+    // Standard MCP protocol SSE implementation
+    app.get('/sse', (req, res) => {
+      console.error('MCP SSE connection established');
+      
+      // Set headers for SSE according to MCP protocol
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      
+      // Send initial connection message in MCP format
+      res.write('data: {"type":"connected"}\n\n');
+      res.flush && res.flush();
+      
+      // Keep the connection alive with a heartbeat
+      const heartbeat = setInterval(() => {
+        try {
+          res.write('data: {"type":"heartbeat"}\n\n');
+          res.flush && res.flush();
+        } catch (error) {
+          console.error('Error sending heartbeat:', error);
           clearInterval(heartbeat);
-          res.end();
-        });
-        
-        // Handle errors
-        req.on('error', (error) => {
-          console.error(`SSE connection error on ${path}:`, error);
-          clearInterval(heartbeat);
-          res.end();
-        });
+        }
+      }, 5000); // Send heartbeat every 5 seconds
+      
+      // Clean up on close
+      req.on('close', () => {
+        console.error('MCP SSE connection closed');
+        clearInterval(heartbeat);
+        res.end();
       });
-    };
+      
+      // Handle errors
+      req.on('error', (error) => {
+        console.error('MCP SSE connection error:', error);
+        clearInterval(heartbeat);
+        res.end();
+      });
+    });
     
-    // Set up SSE endpoints at both paths for maximum compatibility
-    setupSSEEndpoint('/mcp/sse');
-    setupSSEEndpoint('/sse');
+    // Duplicate endpoint at /mcp/sse for compatibility
+    app.get('/mcp/sse', (req, res) => {
+      console.error('MCP SSE connection established on /mcp/sse');
+      
+      // Set headers for SSE according to MCP protocol
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      
+      // Send initial connection message in MCP format
+      res.write('data: {"type":"connected"}\n\n');
+      res.flush && res.flush();
+      
+      // Keep the connection alive with a heartbeat
+      const heartbeat = setInterval(() => {
+        try {
+          res.write('data: {"type":"heartbeat"}\n\n');
+          res.flush && res.flush();
+        } catch (error) {
+          console.error('Error sending heartbeat:', error);
+          clearInterval(heartbeat);
+        }
+      }, 5000); // Send heartbeat every 5 seconds
+      
+      // Clean up on close
+      req.on('close', () => {
+        console.error('MCP SSE connection closed on /mcp/sse');
+        clearInterval(heartbeat);
+        res.end();
+      });
+      
+      // Handle errors
+      req.on('error', (error) => {
+        console.error('MCP SSE connection error on /mcp/sse:', error);
+        clearInterval(heartbeat);
+        res.end();
+      });
+    });
     
     // Add a debug endpoint to check SSE status
     app.get('/debug/sse-status', (req, res) => {
