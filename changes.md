@@ -33,6 +33,14 @@ Additionally, deployed the static webpage to Netlify, making it accessible at ht
    - Made the webpage publicly accessible at https://blue-banana-security-mcp.windsurf.build
    - Project ID: adf8686a-4d6e-4b51-b0ec-bd949bfa94f6 for future deployments
 
+6. **Improved Installation Instructions**
+   - Enhanced the installation guide with step-by-step instructions for non-developers
+   - Added clear explanations of what MCP is and how it works
+   - Created a tabbed interface for different platforms (Cursor, Windsurf, Claude)
+   - Added a "General Use" section with usage instructions and troubleshooting tips
+   - Implemented copy-to-clipboard functionality for code snippets
+   - Styled the instructions with visual cues and consistent formatting
+
 ## Usage
 To use this MCP server with Claude or other AI assistants, add the following configuration:
 
