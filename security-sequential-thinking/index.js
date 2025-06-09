@@ -563,87 +563,95 @@ You should:
       }
     });
     
-    // Standard MCP protocol SSE implementation
-    app.get('/sse', (req, res) => {
-      console.error('MCP SSE connection established');
-      
-      // Set headers for SSE according to MCP protocol
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-      
-      // Send initial connection message in MCP format
-      res.write('data: {"type":"connected"}\n\n');
-      res.flush && res.flush();
-      
-      // Keep the connection alive with a heartbeat
-      const heartbeat = setInterval(() => {
-        try {
-          res.write('data: {"type":"heartbeat"}\n\n');
-          res.flush && res.flush();
-        } catch (error) {
-          console.error('Error sending heartbeat:', error);
+    // MCP protocol SSE implementation with multiple endpoint paths for maximum compatibility
+    const setupMCPSSEEndpoint = (path) => {
+      app.get(path, (req, res) => {
+        console.error(`MCP SSE connection established on ${path}`);
+        
+        // Set headers for SSE according to MCP protocol
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        
+        // Send initial connection message in MCP format
+        // Note: No event type, just data - this is what the MCP client expects
+        res.write('data: {"type":"connected"}\n\n');
+        res.flush && res.flush();
+        
+        // Keep the connection alive with a heartbeat every 2 seconds
+        const heartbeat = setInterval(() => {
+          try {
+            res.write('data: {"type":"heartbeat"}\n\n');
+            res.flush && res.flush();
+          } catch (error) {
+            console.error(`Error sending heartbeat on ${path}:`, error);
+            clearInterval(heartbeat);
+          }
+        }, 2000); // Send heartbeat every 2 seconds
+        
+        // Clean up on close
+        req.on('close', () => {
+          console.error(`MCP SSE connection closed on ${path}`);
           clearInterval(heartbeat);
-        }
-      }, 5000); // Send heartbeat every 5 seconds
-      
-      // Clean up on close
-      req.on('close', () => {
-        console.error('MCP SSE connection closed');
-        clearInterval(heartbeat);
-        res.end();
+          res.end();
+        });
+        
+        // Handle errors
+        req.on('error', (error) => {
+          console.error(`MCP SSE connection error on ${path}:`, error);
+          clearInterval(heartbeat);
+          res.end();
+        });
       });
-      
-      // Handle errors
-      req.on('error', (error) => {
-        console.error('MCP SSE connection error:', error);
-        clearInterval(heartbeat);
-        res.end();
-      });
-    });
+    };
     
-    // Duplicate endpoint at /mcp/sse for compatibility
-    app.get('/mcp/sse', (req, res) => {
-      console.error('MCP SSE connection established on /mcp/sse');
+    // Set up SSE endpoints at multiple paths for maximum compatibility
+    // The MCP client might be looking for any of these paths
+    setupMCPSSEEndpoint('/sse');
+    setupMCPSSEEndpoint('/mcp/sse');
+    setupMCPSSEEndpoint('/events');
+    setupMCPSSEEndpoint('/stream');
+    setupMCPSSEEndpoint('/api/sse');
+    
+    // Special endpoint that follows the exact format used by @modelcontextprotocol servers
+    app.get('/mcp-sse', (req, res) => {
+      console.error('MCP SSE connection established on /mcp-sse (modelcontextprotocol format)');
       
-      // Set headers for SSE according to MCP protocol
+      // Set headers for SSE
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
-      res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering for nginx
+      res.setHeader('X-Accel-Buffering', 'no');
       res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
       
-      // Send initial connection message in MCP format
-      res.write('data: {"type":"connected"}\n\n');
+      // Send a special format that matches @modelcontextprotocol servers
+      res.write('id: 1\nevent: ready\ndata: {}\n\n');
       res.flush && res.flush();
       
-      // Keep the connection alive with a heartbeat
+      let messageId = 2;
       const heartbeat = setInterval(() => {
         try {
-          res.write('data: {"type":"heartbeat"}\n\n');
+          res.write(`id: ${messageId}\nevent: heartbeat\ndata: {}\n\n`);
+          messageId++;
           res.flush && res.flush();
         } catch (error) {
-          console.error('Error sending heartbeat:', error);
+          console.error('Error sending heartbeat on /mcp-sse:', error);
           clearInterval(heartbeat);
         }
-      }, 5000); // Send heartbeat every 5 seconds
+      }, 2000);
       
-      // Clean up on close
       req.on('close', () => {
-        console.error('MCP SSE connection closed on /mcp/sse');
+        console.error('MCP SSE connection closed on /mcp-sse');
         clearInterval(heartbeat);
         res.end();
       });
       
-      // Handle errors
       req.on('error', (error) => {
-        console.error('MCP SSE connection error on /mcp/sse:', error);
+        console.error('MCP SSE connection error on /mcp-sse:', error);
         clearInterval(heartbeat);
         res.end();
       });
